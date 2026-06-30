@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${formTitle}">Bookmark Form</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #dc2626;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .container {
+            max-width: 760px;
+            margin: 30px auto;
+            padding: 24px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        }
+        h1 { margin-top: 0; }
+        .field { margin-bottom: 18px; }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        textarea { min-height: 120px; resize: vertical; }
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .error {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+        .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1 th:text="${formTitle}">Bookmark Form</h1>
+        <form th:action="@{/bookmarks/save}" th:object="${bookmark}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="field">
+                <label for="title">Title</label>
+                <input id="title" type="text" th:field="*{title}" placeholder="Example: Stack Overflow">
+                <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
+
+            <div class="field">
+                <label for="url">Website URL</label>
+                <input id="url" type="text" th:field="*{url}" placeholder="https://example.com">
+                <div class="hint">Use full URL starting with http:// or https://</div>
+                <div class="error" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></div>
+            </div>
+
+            <div class="field">
+                <label for="category">Category</label>
+                <input id="category" type="text" th:field="*{category}" placeholder="Education, Development, News...">
+                <div class="error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+            </div>
+
+            <div class="field">
+                <label for="tags">Tags</label>
+                <input id="tags" type="text" th:field="*{tags}" placeholder="java, tutorials, coding">
+                <div class="hint">Use comma-separated tags</div>
+                <div class="error" th:if="${#fields.hasErrors('tags')}" th:errors="*{tags}"></div>
+            </div>
+
+            <div class="field">
+                <label for="notes">Notes</label>
+                <textarea id="notes" th:field="*{notes}" placeholder="Add short notes about this website"></textarea>
+                <div class="error" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
+            </div>
+
+            <div class="field checkbox">
+                <input id="favorite" type="checkbox" th:field="*{favorite}">
+                <label for="favorite" style="margin: 0;">Mark as favorite</label>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn">Save Bookmark</button>
+                <a th:href="@{/bookmarks}" class="btn secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
